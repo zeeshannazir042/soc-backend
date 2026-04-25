@@ -15,24 +15,36 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://soc-frontend-seven.vercel.app/"
+    "https://soc-frontend-seven.vercel.app"
   ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true
 }));
 
 app.use(express.json());
-
-// DB
-connectDB();
 
 // Routes
 app.use("/alerts", alerts);
 app.use("/triage", triage);
 app.use("/incidents", incidents);
 
-const PORT = process.env.PORT || 5000;
+const startServer = async () => {
+  try {
+    console.log("Starting backend...");
 
-app.listen(PORT, () => {
-  console.log(`Server running on ${PORT}`);
-});
+    await connectDB();
+    console.log("MongoDB connected");
+
+    const PORT = process.env.PORT || 5000;
+
+    app.listen(PORT, () => {
+      console.log(`Server running on ${PORT}`);
+    });
+
+  } catch (error) {
+    console.error(" Server failed to start:", error);
+    process.exit(1);
+  }
+};
+
+startServer();
