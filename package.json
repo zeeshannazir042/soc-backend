@@ -2,7 +2,9 @@
   "name": "wazuh-soc",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "cors": "^2.8.6",
